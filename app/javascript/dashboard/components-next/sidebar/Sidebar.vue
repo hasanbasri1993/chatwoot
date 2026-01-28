@@ -15,7 +15,6 @@ import Button from 'dashboard/components-next/button/Button.vue';
 import SidebarGroup from './SidebarGroup.vue';
 import SidebarProfileMenu from './SidebarProfileMenu.vue';
 import SidebarChangelogCard from './SidebarChangelogCard.vue';
-import YearInReviewBanner from '../year-in-review/YearInReviewBanner.vue';
 import ChannelLeaf from './ChannelLeaf.vue';
 import SidebarAccountSwitcher from './SidebarAccountSwitcher.vue';
 import Logo from 'next/icon/Logo.vue';
@@ -530,7 +529,7 @@ const menuItems = computed(() => {
         {
           name: 'Settings Automation',
           label: t('SIDEBAR.AUTOMATION'),
-          icon: 'i-lucide-workflow',
+          icon: 'i-lucide-repeat',
           to: accountScopedRoute('automation_list'),
         },
         {
@@ -574,6 +573,12 @@ const menuItems = computed(() => {
           label: t('SIDEBAR.SLA'),
           icon: 'i-lucide-clock-alert',
           to: accountScopedRoute('sla_list'),
+        },
+        {
+          name: 'Conversation Workflow',
+          label: t('SIDEBAR.CONVERSATION_WORKFLOW'),
+          icon: 'i-lucide-workflow',
+          to: accountScopedRoute('conversation_workflow_index'),
         },
         {
           name: 'Settings Security',
@@ -656,12 +661,11 @@ const menuItems = computed(() => {
       </ul>
     </nav>
     <section
-      class="flex flex-col flex-shrink-0 relative gap-1 justify-between items-center"
+      class="flex relative flex-col flex-shrink-0 gap-1 justify-between items-center"
     >
       <div
         class="pointer-events-none absolute inset-x-0 -top-[31px] h-8 bg-gradient-to-t from-n-solid-2 to-transparent"
       />
-      <YearInReviewBanner />
       <SidebarChangelogCard
         v-if="isOnChatwootCloud && !isACustomBrandedInstance"
       />
