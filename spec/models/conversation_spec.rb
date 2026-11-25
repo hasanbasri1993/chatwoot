@@ -724,6 +724,7 @@ RSpec.describe Conversation do
         messages: [],
         labels: [],
         last_activity_at: conversation.last_activity_at.to_i,
+        last_message_at: nil,
         inbox_id: conversation.inbox_id,
         status: conversation.status,
         contact_inbox: conversation.contact_inbox,
@@ -820,7 +821,7 @@ RSpec.describe Conversation do
 
   describe '#botintegration: when conversation created in inbox with dialogflow integration' do
     let(:inbox) { create(:inbox) }
-    let(:hook) { create(:integrations_hook, :dialogflow, inbox: inbox) }
+    let(:hook) { create(:integrations_hook, :dialogflow, inbox: inbox, account: inbox.account) }
     let(:conversation) { create(:conversation, inbox: hook.inbox) }
 
     it 'returns conversation status as pending' do

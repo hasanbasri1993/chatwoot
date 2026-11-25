@@ -166,6 +166,9 @@
         },
         {
           "$ref": "#/components/parameters/public_contact_identifier"
+        },
+        {
+          "$ref": "#/components/parameters/public_identifier_hash"
         }
       ],
       "post": {
@@ -254,6 +257,9 @@
           "$ref": "#/components/parameters/public_contact_identifier"
         },
         {
+          "$ref": "#/components/parameters/public_identifier_hash"
+        },
+        {
           "$ref": "#/components/parameters/conversation_id"
         }
       ],
@@ -308,6 +314,9 @@
           "$ref": "#/components/parameters/public_contact_identifier"
         },
         {
+          "$ref": "#/components/parameters/public_identifier_hash"
+        },
+        {
           "$ref": "#/components/parameters/conversation_id"
         }
       ],
@@ -360,6 +369,9 @@
         },
         {
           "$ref": "#/components/parameters/public_contact_identifier"
+        },
+        {
+          "$ref": "#/components/parameters/public_identifier_hash"
         },
         {
           "$ref": "#/components/parameters/conversation_id"
@@ -441,6 +453,9 @@
           "$ref": "#/components/parameters/public_contact_identifier"
         },
         {
+          "$ref": "#/components/parameters/public_identifier_hash"
+        },
+        {
           "$ref": "#/components/parameters/conversation_id"
         }
       ],
@@ -486,6 +501,9 @@
         },
         {
           "$ref": "#/components/parameters/public_contact_identifier"
+        },
+        {
+          "$ref": "#/components/parameters/public_identifier_hash"
         },
         {
           "$ref": "#/components/parameters/conversation_id"
@@ -575,6 +593,9 @@
         },
         {
           "$ref": "#/components/parameters/public_contact_identifier"
+        },
+        {
+          "$ref": "#/components/parameters/public_identifier_hash"
         },
         {
           "$ref": "#/components/parameters/conversation_id"
@@ -1317,6 +1338,13 @@
               }
             ],
             "description": "The last non activity message"
+          },
+          "last_message_at": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Unix timestamp of the most recent public, non-activity message."
           },
           "last_activity_at": {
             "type": "number",
@@ -7787,6 +7815,29 @@
         "required": false,
         "description": "The attribute by which list should be sorted"
       },
+      "conversation_sort": {
+        "name": "sort_by",
+        "in": "query",
+        "description": "Order conversations before pagination. Last message sorting requires the account feature and places conversations without public messages last.",
+        "schema": {
+          "type": "string",
+          "default": "last_activity_at_desc",
+          "enum": [
+            "last_activity_at_asc",
+            "last_activity_at_desc",
+            "last_message_at_desc",
+            "last_message_at_asc",
+            "created_at_asc",
+            "created_at_desc",
+            "priority_asc",
+            "priority_desc",
+            "waiting_since_asc",
+            "waiting_since_desc",
+            "priority_desc_created_at_asc",
+            "unread"
+          ]
+        }
+      },
       "conversation_id": {
         "in": "path",
         "name": "conversation_id",
@@ -7901,6 +7952,15 @@
         },
         "required": true,
         "description": "The source id of contact obtained on contact create"
+      },
+      "public_identifier_hash": {
+        "in": "query",
+        "name": "identifier_hash",
+        "schema": {
+          "type": "string"
+        },
+        "required": false,
+        "description": "HMAC-SHA256 of the contact identifier, signed with the inbox HMAC token. Required when the inbox enforces identity validation."
       },
       "portal_slug": {
         "in": "path",
