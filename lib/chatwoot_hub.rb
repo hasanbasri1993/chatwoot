@@ -39,7 +39,10 @@ class ChatwootHub
   def self.pricing_plan
     return 'community' unless ChatwootApp.enterprise?
 
-    InstallationConfig.find_by(name: 'INSTALLATION_PRICING_PLAN')&.value || 'community'
+    # An explicit env override lets self-hosted installations opt into a paid plan
+    # without waiting for the hub sync to update the stored value.
+    ENV['INSTALLATION_PRICING_PLAN'].presence ||
+      InstallationConfig.find_by(name: 'INSTALLATION_PRICING_PLAN')&.value || 'community'
   end
 
   def self.pricing_plan_quantity

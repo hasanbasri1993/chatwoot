@@ -8,6 +8,26 @@ describe ChatwootHub do
     end
   end
 
+  describe '.pricing_plan' do
+    before { allow(ChatwootApp).to receive(:enterprise?).and_return(true) }
+
+    it 'prefers the env override over the stored config' do
+      create(:installation_config, name: 'INSTALLATION_PRICING_PLAN', value: 'community')
+
+      with_modified_env INSTALLATION_PRICING_PLAN: 'enterprise' do
+        expect(described_class.pricing_plan).to eq 'enterprise'
+      end
+    end
+
+    it 'falls back to the stored config when the env override is blank' do
+      create(:installation_config, name: 'INSTALLATION_PRICING_PLAN', value: 'premium')
+
+      with_modified_env INSTALLATION_PRICING_PLAN: nil do
+        expect(described_class.pricing_plan).to eq 'premium'
+      end
+    end
+  end
+
   it 'generates installation identifier' do
     installation_identifier = described_class.installation_identifier
     expect(installation_identifier).not_to be_nil
