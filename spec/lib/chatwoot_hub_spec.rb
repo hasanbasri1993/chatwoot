@@ -28,6 +28,32 @@ describe ChatwootHub do
     end
   end
 
+  describe '.pricing_plan_quantity' do
+    before { allow(ChatwootApp).to receive(:enterprise?).and_return(true) }
+
+    it 'prefers the env override over the stored config' do
+      create(:installation_config, name: 'INSTALLATION_PRICING_PLAN_QUANTITY', value: 0)
+
+      with_modified_env INSTALLATION_PRICING_PLAN_QUANTITY: '10' do
+        expect(described_class.pricing_plan_quantity).to eq 10
+      end
+    end
+
+    it 'falls back to the stored config when the env override is blank' do
+      create(:installation_config, name: 'INSTALLATION_PRICING_PLAN_QUANTITY', value: 5)
+
+      with_modified_env INSTALLATION_PRICING_PLAN_QUANTITY: nil do
+        expect(described_class.pricing_plan_quantity).to eq 5
+      end
+    end
+
+    it 'returns zero when the stored config is missing' do
+      with_modified_env INSTALLATION_PRICING_PLAN_QUANTITY: nil do
+        expect(described_class.pricing_plan_quantity).to eq 0
+      end
+    end
+  end
+
   it 'generates installation identifier' do
     installation_identifier = described_class.installation_identifier
     expect(installation_identifier).not_to be_nil
